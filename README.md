@@ -93,10 +93,11 @@ CLI (--run)  →  POST /rpc { method: "run", params: { key, cmd } }
 - The seed is effectively a password. Treat it like one — do not reuse it, do not commit it, do not log it.
 - The local RPC daemon binds only to `127.0.0.1` — it is not reachable from the network, but any local process can call it.
 
-**Hardening:**
-- Replace `firewall: () => false` with a whitelist of allowed public keys if you need access control
-- Use a long random seed: `openssl rand -hex 16`
-- Run the server as a least-privilege user
+**Use a hard seed:**
+```
+openssl rand -hex 16
+# → e3b4f2a1c8d7e6f5a4b3c2d1e0f9a8b7
+```
 
 ---
 

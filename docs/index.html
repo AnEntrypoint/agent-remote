@@ -451,13 +451,12 @@ console.log(result.stdout) // → "myuser\n"</pre>
       sensitive credential.
     </div>
 
-    <h3>Hardening</h3>
-    <pre>// Restrict to specific client public key
-server.on("connection", socket => {
-  const allowed = Buffer.from("&lt;client-pubkey-hex&gt;", "hex")
-  if (!socket.remotePublicKey.equals(allowed)) return socket.destroy()
-  // ...
-})</pre>
+    <h3>Make a hard seed</h3>
+    <p>The seed is your only access control. Generate one you can't guess:</p>
+    <pre>openssl rand -hex 16
+# → e3b4f2a1c8d7e6f5a4b3c2d1e0f9a8b7
+
+bun x agent-remote --server --key e3b4f2a1c8d7e6f5a4b3c2d1e0f9a8b7</pre>
   </section>
 
   <!-- stack -->
