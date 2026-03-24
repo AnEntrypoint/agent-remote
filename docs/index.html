@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>agent-remote</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --surface: #141414;
+      --border: #222;
+      --accent: #7fff7f;
+      --accent-dim: #3a7a3a;
+      --text: #e8e8e8;
+      --muted: #666;
+      --code-bg: #0a0a0a;
+      --warn: #ffcc44;
+      --font-mono: 'Fira Code', 'Cascadia Code', 'Menlo', monospace;
+      --font-sans: 'Inter', system-ui, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── layout ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-family: var(--font-mono);
+      font-size: 1.4rem;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+    }
+
+    .badges {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .badge.green { border-color: var(--accent-dim); color: var(--accent); }
+
+    nav {
+      margin-left: auto;
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    nav a { color: var(--muted); }
+    nav a:hover { color: var(--text); }
+
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 3rem 2rem 6rem;
+    }
+
+    section { margin-bottom: 4rem; }
+
+    h1 { font-size: 2.2rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.75rem; }
+    h2 { font-size: 1.15rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+    h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 0.5rem; color: var(--text); }
+
+    p { margin-bottom: 1rem; color: #bbb; }
+
+    /* ── install block ── */
+    .install {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .install code {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      color: var(--accent);
+      flex: 1;
+    }
+
+    .copy-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+
+    .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-btn.copied { border-color: var(--accent); color: var(--accent); }
+
+    /* ── code blocks ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    code { font-family: var(--font-mono); font-size: 0.88em; }
+    p code, li code { background: #1a1a1a; padding: 1px 5px; border-radius: 3px; color: #ccc; }
+
+    /* ── pipeline diagram ── */
+    .pipeline {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      line-height: 2;
+      overflow-x: auto;
+    }
+
+    .pipeline .node { color: var(--accent); }
+    .pipeline .arrow { color: var(--muted); }
+    .pipeline .label { color: #888; }
+
+    /* ── table ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin: 1rem 0;
+    }
+
+    th {
+      text-align: left;
+      padding: 0.5rem 1rem;
+      color: var(--muted);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    td {
+      padding: 0.6rem 1rem;
+      border-bottom: 1px solid #1a1a1a;
+      color: #bbb;
+      vertical-align: top;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    td:first-child { font-family: var(--font-mono); color: var(--text); }
+
+    /* ── warning block ── */
+    .warn-block {
+      background: #1a1500;
+      border: 1px solid #443300;
+      border-left: 3px solid var(--warn);
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+      color: #ccaa44;
+    }
+
+    .warn-block strong { color: var(--warn); }
+
+    /* ── step list ── */
+    .steps { list-style: none; counter-reset: steps; }
+    .steps li {
+      counter-increment: steps;
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      align-items: flex-start;
+    }
+    .steps li::before {
+      content: counter(steps);
+      min-width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .steps li .step-body { flex: 1; }
+    .steps li .step-body p { margin-bottom: 0.5rem; }
+
+    /* ── stack grid ── */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .stack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+    }
+
+    .stack-card .pkg { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); margin-bottom: 0.4rem; }
+    .stack-card .role { font-size: 0.8rem; color: var(--muted); line-height: 1.4; }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="logo">agent-remote</span>
+  <div class="badges">
+    <span class="badge green">p2p</span>
+    <span class="badge green">zero config</span>
+    <span class="badge">HyperDHT</span>
+    <span class="badge">Noise Protocol</span>
+    <span class="badge">NAT traversal</span>
+  </div>
+  <nav>
+    <a href="https://github.com/AnEntrypoint/agent-remote">GitHub</a>
+    <a href="https://npmjs.com/package/agent-remote">npm</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- hero -->
+  <section>
+    <h1>Remote shell.<br>No servers. No ports.</h1>
+    <p>
+      Run commands on any machine, anywhere, using a shared seed phrase.
+      Traffic is end-to-end encrypted. NAT is traversed automatically.
+      Nothing to configure.
+    </p>
+
+    <div class="install">
+      <code id="install-cmd">bun x agent-remote --server --key myseed</code>
+      <button class="copy-btn" onclick="copy('install-cmd', this)">copy</button>
+    </div>
+
+    <div class="install">
+      <code id="run-cmd">bun x agent-remote --run --key myseed whoami</code>
+      <button class="copy-btn" onclick="copy('run-cmd', this)">copy</button>
+    </div>
+  </section>
+
+  <!-- quick start -->
+  <section>
+    <h2>Quick start</h2>
+    <ul class="steps">
+      <li>
+        <div class="step-body">
+          <p><strong>On the remote machine</strong> — start the shell server</p>
+          <pre>bun x agent-remote --server --key myseed</pre>
+          <p>Prints the public key. Stays listening on the DHT.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <p><strong>On your local machine</strong> — start the daemon</p>
+          <pre>bun x agent-remote --daemon</pre>
+          <p>Starts a local HTTP server. Pays the DHT bootstrap cost once and keeps the node alive.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <p><strong>Run commands atomically</strong></p>
+          <pre>bun x agent-remote --run --key myseed whoami
+bun x agent-remote --run --key myseed "df -h"
+bun x agent-remote --run --key myseed ls /var/log</pre>
+          <p>Each call is a single RPC round-trip. The daemon stays warm between calls.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <p><strong>Shutdown when done</strong></p>
+          <pre>bun x agent-remote --shutdown</pre>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- pipeline -->
+  <section>
+    <h2>How it works</h2>
+    <p>Each <code>--run</code> call walks this pipeline:</p>
+
+    <div class="pipeline">
+<span class="node">CLI  --run</span>
+  <span class="arrow">↓</span>  <span class="label">POST /rpc  { method: "run", params: { key, cmd } }</span>
+<span class="node">local daemon</span>
+  <span class="arrow">↓</span>  <span class="label">sha256(seed) → DHT.keyPair(32 bytes)</span>
+<span class="node">key derivation</span>
+  <span class="arrow">↓</span>  <span class="label">DHT node.connect(publicKey)  →  UDP holepunch</span>
+<span class="node">HyperDHT socket</span>
+  <span class="arrow">↓</span>  <span class="label">Noise XX handshake  →  encrypted channel</span>
+<span class="node">Protomux  { protocol: "hypershell" }</span>
+  <span class="arrow">↓</span>  <span class="label">ShellClient sends: [shell, flag, cmd]</span>
+<span class="node">remote ShellServer</span>
+  <span class="arrow">↓</span>  <span class="label">spawns $SHELL  →  pipes stdout / stderr</span>
+<span class="node">stream back</span>
+  <span class="arrow">↓</span>  <span class="label">channel close  →  { stdout, stderr }</span>
+<span class="node">result returned to CLI</span>
+    </div>
+
+    <h3>Key derivation</h3>
+    <p>
+      The seed phrase is SHA-256 hashed into 32 bytes, then fed into <code>DHT.keyPair()</code>
+      to produce a Curve25519 keypair. The <strong>public key is the server's address</strong>
+      on the DHT — no DNS, no IPs, no port forwarding.
+    </p>
+    <pre>sha256("myseed") → 32 bytes → { publicKey, secretKey }
+                                       ↑
+                             server listens here
+                             client connects here</pre>
+
+    <h3>Shell detection</h3>
+    <p>
+      The daemon reads the shell from the environment at startup — once.
+      Whatever shell launched the daemon is used for every command.
+    </p>
+    <table>
+      <tr><th>Platform</th><th>Source</th><th>Default</th></tr>
+      <tr><td>Windows</td><td><code>%COMSPEC%</code></td><td><code>cmd.exe /c</code></td></tr>
+      <tr><td>Unix</td><td><code>$SHELL</code></td><td><code>/bin/sh -c</code></td></tr>
+    </table>
+
+    <h3>Daemon architecture</h3>
+    <p>
+      The daemon is a long-lived HTTP server on <code>127.0.0.1</code> at a random port,
+      written to <code>$TMPDIR/agent-remote.port</code>. Each CLI invocation reads that
+      file to find the daemon. This means DHT bootstrap happens once — subsequent
+      <code>--run</code> calls are just local HTTP round-trips followed by a DHT connection.
+    </p>
+  </section>
+
+  <!-- RPC API -->
+  <section>
+    <h2>RPC API</h2>
+    <p>The daemon exposes a JSON-RPC interface. Use it directly from any language.</p>
+    <table>
+      <tr><th>Method</th><th>Params</th><th>Returns</th></tr>
+      <tr><td>run</td><td><code>{ key, cmd }</code></td><td><code>{ stdout, stderr }</code></td></tr>
+      <tr><td>connect</td><td><code>{ key }</code></td><td><code>{ id }</code></td></tr>
+      <tr><td>disconnect</td><td><code>{ id }</code></td><td><code>{ ok }</code></td></tr>
+      <tr><td>connections</td><td>—</td><td><code>{ ids }</code></td></tr>
+      <tr><td>shutdown</td><td>—</td><td><code>{ ok }</code></td></tr>
+    </table>
+
+    <pre>import fs from 'fs'
+import os from 'os'
+import path from 'path'
+
+const port = fs.readFileSync(path.join(os.tmpdir(), 'agent-remote.port'), 'utf8').trim()
+
+const res = await fetch(`http://127.0.0.1:${port}/rpc`, {
+  method: 'POST',
+  body: JSON.stringify({ id: 1, method: 'run', params: { key: 'myseed', cmd: 'whoami' } })
+})
+
+const { result } = await res.json()
+console.log(result.stdout) // → "myuser\n"</pre>
+  </section>
+
+  <!-- security -->
+  <section>
+    <h2>Security</h2>
+
+    <h3>What is protected</h3>
+    <p>
+      All traffic is end-to-end encrypted via the <strong>Noise Protocol (XX handshake)</strong>.
+      The DHT relay nodes cannot read your data — they only route encrypted packets.
+      Both sides must present a valid keypair derived from the Curve25519 exchange to
+      complete the handshake.
+    </p>
+
+    <h3>What to pay attention to</h3>
+
+    <div class="warn-block">
+      <strong>Open firewall by default.</strong>
+      The server uses <code>firewall: () =&gt; false</code>, which accepts connections from
+      any DHT keypair. Anyone who knows (or brute-forces) a valid connection can open a shell.
+      The seed is your only access control — treat it like a password.
+    </div>
+
+    <div class="warn-block">
+      <strong>The seed is a root credential.</strong>
+      Anyone with the seed can derive the keypair and connect. Use a long random seed:
+      <code>openssl rand -hex 16</code>. Never commit it. Never reuse it across machines.
+    </div>
+
+    <div class="warn-block">
+      <strong>Local daemon is trusted.</strong>
+      The RPC server binds only to <code>127.0.0.1</code> — not reachable from the network —
+      but any local process can call it. On shared machines, treat the port file as a
+      sensitive credential.
+    </div>
+
+    <h3>Hardening</h3>
+    <pre>// Restrict to specific client public key
+server.on("connection", socket => {
+  const allowed = Buffer.from("&lt;client-pubkey-hex&gt;", "hex")
+  if (!socket.remotePublicKey.equals(allowed)) return socket.destroy()
+  // ...
+})</pre>
+  </section>
+
+  <!-- stack -->
+  <section>
+    <h2>Stack</h2>
+    <div class="stack-grid">
+      <div class="stack-card">
+        <div class="pkg">hyperdht</div>
+        <div class="role">Peer discovery, UDP holepunching, Noise Protocol encryption</div>
+      </div>
+      <div class="stack-card">
+        <div class="pkg">protomux</div>
+        <div class="role">Logical channel multiplexing over one encrypted socket</div>
+      </div>
+      <div class="stack-card">
+        <div class="pkg">hypershell</div>
+        <div class="role">PTY negotiation and stdio framing over a protomux channel</div>
+      </div>
+      <div class="stack-card">
+        <div class="pkg">hypercore-id-encoding</div>
+        <div class="role">Hex encode / decode Curve25519 public keys</div>
+      </div>
+      <div class="stack-card">
+        <div class="pkg">node:http</div>
+        <div class="role">Local-only RPC between CLI invocations and the daemon</div>
+      </div>
+      <div class="stack-card">
+        <div class="pkg">node:crypto</div>
+        <div class="role">SHA-256 seed → keypair deterministic derivation</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  agent-remote — MIT license
+</footer>
+
+<script>
+  function copy(id, btn) {
+    const text = document.getElementById(id).textContent
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'copied!'
+      btn.classList.add('copied')
+      setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied') }, 1500)
+    })
+  }
+</script>
+
+</body>
+</html>

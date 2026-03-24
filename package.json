@@ -1,10 +1,10 @@
 {
-  "name": "agent-shell",
+  "name": "agent-remote",
   "version": "1.0.0",
   "type": "module",
   "main": "shell.js",
   "bin": {
-    "agent-shell": "./shell.js"
+    "agent-remote": "./shell.js"
   },
   "scripts": {
     "start": "bun run shell.js"
