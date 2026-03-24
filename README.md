@@ -89,7 +89,6 @@ CLI (--run)  →  POST /rpc { method: "run", params: { key, cmd } }
 - A valid keypair (derived from the seed) is required to open a shell channel
 
 **What is NOT protected by default:**
-- `firewall: () => false` — the server accepts connections from **any** keypair, not just yours. Anyone who connects with a valid DHT connection gets a shell.
 - The seed is effectively a password. Treat it like one — do not reuse it, do not commit it, do not log it.
 - The local RPC daemon binds only to `127.0.0.1` — it is not reachable from the network, but any local process can call it.
 

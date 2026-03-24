@@ -432,13 +432,6 @@ console.log(result.stdout) // → "myuser\n"</pre>
     <h3>What to pay attention to</h3>
 
     <div class="warn-block">
-      <strong>Open firewall by default.</strong>
-      The server uses <code>firewall: () =&gt; false</code>, which accepts connections from
-      any DHT keypair. Anyone who knows (or brute-forces) a valid connection can open a shell.
-      The seed is your only access control — treat it like a password.
-    </div>
-
-    <div class="warn-block">
       <strong>The seed is a root credential.</strong>
       Anyone with the seed can derive the keypair and connect. Use a long random seed:
       <code>openssl rand -hex 16</code>. Never commit it. Never reuse it across machines.
