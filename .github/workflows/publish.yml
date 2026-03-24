@@ -1,19 +1,90 @@
-name: Publish to npm
+name: Build and Publish
 
-on:
-  push:
-    tags:
-      - 'v*'
+on: [push]
 
 jobs:
-  publish:
+  version-and-publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.bump.outputs.version }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm publish --access public
+      - name: Bump patch version
+        id: bump
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "github-actions"
+          npm version patch --no-git-tag-version
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          git add package.json
+          git commit -m "chore: bump version to $VERSION [skip ci]"
+          git push
+      - name: Publish to npm
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  build-binaries:
+    needs: version-and-publish
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: bun-linux-x64
+            out: agent-remote-linux-x64
+          - os: ubuntu-latest
+            target: bun-linux-arm64
+            out: agent-remote-linux-arm64
+          - os: macos-latest
+            target: bun-darwin-x64
+            out: agent-remote-macos-x64
+          - os: macos-latest
+            target: bun-darwin-arm64
+            out: agent-remote-macos-arm64
+          - os: windows-latest
+            target: bun-windows-x64
+            out: agent-remote-windows-x64.exe
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: oven-sh/setup-bun@v2
+      - name: Pull latest (after version bump)
+        run: git pull
+      - run: bun install
+      - name: Build binary
+        run: bun build --compile --target=${{ matrix.target }} shell.js --outfile=${{ matrix.out }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.out }}
+          path: ${{ matrix.out }}
+
+  release:
+    needs: [version-and-publish, build-binaries]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: binaries
+          merge-multiple: true
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.version-and-publish.outputs.version }}
+          name: v${{ needs.version-and-publish.outputs.version }}
+          files: binaries/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
