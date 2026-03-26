@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 import { createHash } from "node:crypto";
 import http from "node:http";
-import { writeFileSync, readFileSync, unlinkSync } from "node:fs";
+import { writeFileSync, readFileSync, existsSync, unlinkSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 
 const PORT_FILE = join(tmpdir(), "agent-shell.port");
-
-// ── key derivation ────────────────────────────────────────────────────────────
+const SHELL = process.platform === "win32"
+  ? { bin: process.env.COMSPEC || "cmd.exe", flag: "/c" }
+  : { bin: process.env.SHELL || "/bin/sh", flag: "-c" };
 
 async function deriveKeyPair(keyString) {
   const DHT = (await import("hyperdht")).default;
@@ -15,17 +16,13 @@ async function deriveKeyPair(keyString) {
   return { keyPair: DHT.keyPair(seed), DHT };
 }
 
-// ── server mode ───────────────────────────────────────────────────────────────
-
 async function runServer(keyString) {
   const HypercoreId = (await import("hypercore-id-encoding")).default;
   const Protomux = (await import("protomux")).default;
   const { ShellServer } = await import("hypershell/lib/shell.js");
   const { keyPair, DHT } = await deriveKeyPair(keyString);
-
   const node = new DHT();
   const server = node.createServer({ firewall: () => false });
-
   server.on("connection", socket => {
     socket.on("end", () => socket.end());
     socket.on("error", err => {
@@ -34,11 +31,10 @@ async function runServer(keyString) {
     socket.setKeepAlive(5000);
     const mux = new Protomux(socket);
     mux.pair({ protocol: "hypershell" }, () => {
-      const shell = new ShellServer({ node, socket, mux });
+      const shell = new ShellServer({ mux });
       if (shell.channel) shell.open();
     });
   });
-
   await server.listen(keyPair);
   const pubHex = HypercoreId.encode(keyPair.publicKey);
   console.log("Shell server listening");
@@ -47,16 +43,8 @@ async function runServer(keyString) {
   console.log("Connect with: agent-shell --client --key " + keyString);
 }
 
-// ── shell detection ───────────────────────────────────────────────────────────
-
-const SHELL = process.platform === "win32"
-  ? { bin: process.env.COMSPEC || "cmd.exe", flag: "/c" }
-  : { bin: process.env.SHELL || "/bin/sh", flag: "-c" };
-
-// ── daemon: persistent DHT node + connection pool ────────────────────────────
-
 let _dht = null;
-const _connections = new Map(); // id → { socket, mux, client }
+const _connections = new Map();
 let _nextId = 1;
 
 async function getDHT(keyString) {
@@ -67,73 +55,61 @@ async function getDHT(keyString) {
 }
 
 async function connectTo(keyString) {
-  const Protomux = (await import("protomux")).default;
-  const { ShellClient } = await import("hypershell/lib/shell.js");
-  const { keyPair, DHT } = await deriveKeyPair(keyString);
-
-  const node = new DHT();
+  const { keyPair } = await deriveKeyPair(keyString);
+  const { node } = await getDHT(keyString);
   const socket = node.connect(keyPair.publicKey, { keyPair });
-
   await new Promise((resolve, reject) => {
     socket.once("open", resolve);
     socket.once("error", reject);
   });
-
   socket.on("end", () => socket.end());
-  socket.once("close", () => node.destroy());
   socket.setKeepAlive(5000);
-
   const id = _nextId++;
-  _connections.set(id, { socket, node });
+  _connections.set(id, { socket });
+  socket.once("close", () => _connections.delete(id));
   return id;
 }
 
 async function runCommand(keyString, cmd) {
   const Protomux = (await import("protomux")).default;
-  const { ShellClient } = await import("hypershell/lib/shell.js");
+  const { handshakeSpawn, resize } = await import("hypershell/messages.js");
+  const { buffer, uint } = await import("compact-encoding");
   const { keyPair, DHT } = await deriveKeyPair(keyString);
-
   const node = new DHT();
   const socket = node.connect(keyPair.publicKey, { keyPair });
-
-  let stdout = "";
-  let stderr = "";
-
   await new Promise((resolve, reject) => {
     socket.once("open", resolve);
     socket.once("error", reject);
   });
-
   socket.setKeepAlive(5000);
-
+  const command = Array.isArray(cmd) ? cmd[0] : SHELL.bin;
+  const args = Array.isArray(cmd) ? cmd.slice(1) : [SHELL.flag, cmd];
   return new Promise((resolve, reject) => {
+    let stdout = "";
+    let stderr = "";
     const mux = new Protomux(socket);
-    const args = Array.isArray(cmd) ? ["--", ...cmd] : ["--", SHELL.bin, SHELL.flag, cmd];
-    const client = new ShellClient(args, { socket, mux });
-
-    if (!client.channel) {
-      socket.destroy();
-      node.destroy();
-      return reject(new Error("ShellClient channel not opened"));
-    }
-
-    const origWrite = process.stdout.write.bind(process.stdout);
-    const origErrWrite = process.stderr.write.bind(process.stderr);
-
-    client.channel.messages[1]?.on("data", buf => { stdout += buf.toString(); });
-    client.channel.messages[2]?.on("data", buf => { stderr += buf.toString(); });
-
-    client.channel.on("close", () => {
-      socket.destroy();
-      node.destroy();
-      resolve({ stdout, stderr });
+    const channel = mux.createChannel({
+      protocol: "hypershell",
+      id: null,
+      handshake: handshakeSpawn,
+      onopen() {},
+      onclose() { socket.destroy(); node.destroy(); resolve({ stdout, stderr }); },
+      messages: [
+        { encoding: buffer },
+        { encoding: buffer, onmessage(buf) { stdout += buf.toString(); } },
+        { encoding: buffer, onmessage(buf) { stderr += buf.toString(); } },
+        { encoding: uint, onmessage() {} },
+        { encoding: resize },
+      ]
     });
-
-    client.open();
+    if (!channel) {
+      socket.destroy();
+      node.destroy();
+      return reject(new Error("Could not open shell channel"));
+    }
+    channel.open({ command, args, width: 80, height: 24 });
   });
 }
-
-// ── HTTP RPC daemon ───────────────────────────────────────────────────────────
 
 function sendJSON(res, status, body) {
   const data = JSON.stringify(body);
@@ -156,21 +132,18 @@ async function handleRPC(body) {
     case "run": {
       const { key, cmd } = params;
       if (!key || !cmd) throw new Error("run requires key and cmd");
-      const result = await runCommand(key, cmd);
-      return result;
+      return await runCommand(key, cmd);
     }
     case "connect": {
       const { key } = params;
       if (!key) throw new Error("connect requires key");
-      const id = await connectTo(key);
-      return { id };
+      return { id: await connectTo(key) };
     }
     case "disconnect": {
       const { id } = params;
       const conn = _connections.get(id);
       if (!conn) return { ok: false };
       conn.socket.destroy();
-      conn.node.destroy();
       _connections.delete(id);
       return { ok: true };
     }
@@ -196,7 +169,27 @@ async function handleRequest(req, res) {
   } catch (e) { try { sendJSON(res, 400, { error: e.message }); } catch (_) {} }
 }
 
+async function checkPortAlive(port) {
+  return new Promise(resolve => {
+    const req = http.request(
+      { hostname: "127.0.0.1", port, path: "/health", method: "GET", timeout: 1000 },
+      res => { res.resume(); resolve(true); }
+    );
+    req.on("error", () => resolve(false));
+    req.on("timeout", () => { req.destroy(); resolve(false); });
+    req.end();
+  });
+}
+
 async function startDaemon() {
+  if (existsSync(PORT_FILE)) {
+    const existingPort = parseInt(readFileSync(PORT_FILE, "utf8").trim(), 10);
+    if (await checkPortAlive(existingPort)) {
+      console.error("Daemon already running on port " + existingPort);
+      process.exit(1);
+    }
+    unlinkSync(PORT_FILE);
+  }
   const server = http.createServer(handleRequest);
   await new Promise((resolve, reject) => {
     server.once("error", reject);
@@ -206,12 +199,9 @@ async function startDaemon() {
   writeFileSync(PORT_FILE, String(port));
   console.log("agent-shell daemon listening on port " + port);
   console.log("Port file: " + PORT_FILE);
-
   process.on("SIGTERM", () => { try { unlinkSync(PORT_FILE); } catch {} process.exit(0); });
   process.on("SIGINT", () => { try { unlinkSync(PORT_FILE); } catch {} process.exit(0); });
 }
-
-// ── CLI client ────────────────────────────────────────────────────────────────
 
 async function rpc(method, params) {
   const port = parseInt(readFileSync(PORT_FILE, "utf8").trim(), 10);
@@ -240,19 +230,15 @@ async function main() {
   const keyIdx = args.indexOf("--key");
   const keyString = keyIdx !== -1 ? args[keyIdx + 1] : "agent-shell-default";
 
-  if (args.includes("--server")) {
-    await runServer(keyString);
-    return;
-  }
-
-  if (args.includes("--daemon")) {
-    await startDaemon();
-    return;
-  }
+  if (args.includes("--server")) return runServer(keyString);
+  if (args.includes("--daemon")) return startDaemon();
 
   if (args.includes("--run")) {
     const runIdx = args.indexOf("--run");
-    const cmd = args.slice(runIdx + 1).filter(a => a !== "--key" && a !== keyString).join(" ");
+    const after = args.slice(runIdx + 1);
+    const kIdx = after.indexOf("--key");
+    if (kIdx !== -1) after.splice(kIdx, 2);
+    const cmd = after.join(" ");
     const result = await rpc("run", { key: keyString, cmd });
     if (result.stdout) process.stdout.write(result.stdout);
     if (result.stderr) process.stderr.write(result.stderr);

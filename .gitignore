@@ -1,3 +1,6 @@
 node_modules/
 *.exe
 *.tmp
+.gm-stop-verified
+
+.code-search/
