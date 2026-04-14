@@ -30,10 +30,8 @@ async function runServer(keyString) {
     });
     socket.setKeepAlive(5000);
     const mux = new Protomux(socket);
-    mux.pair({ protocol: "hypershell" }, () => {
-      const shell = new ShellServer({ mux });
-      if (shell.channel) shell.open();
-    });
+    const shell = new ShellServer({ mux });
+    if (shell.channel) shell.open();
   });
   await server.listen(keyPair);
   const pubHex = HypercoreId.encode(keyPair.publicKey);

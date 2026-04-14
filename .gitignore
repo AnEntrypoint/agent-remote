@@ -4,3 +4,7 @@ node_modules/
 .gm-stop-verified
 
 .code-search/
+run-remote.js
+test-install.js
+ProPlus-NoOneNote.xml
+remove-onenote.ps1
