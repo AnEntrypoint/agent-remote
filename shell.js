@@ -85,18 +85,19 @@ async function runCommand(keyString, cmd) {
   return new Promise((resolve, reject) => {
     let stdout = "";
     let stderr = "";
+    let exitCode = null;
     const mux = new Protomux(socket);
     const channel = mux.createChannel({
       protocol: "hypershell",
       id: null,
       handshake: handshakeSpawn,
       onopen() {},
-      onclose() { socket.destroy(); node.destroy(); resolve({ stdout, stderr }); },
+      onclose() { socket.destroy(); node.destroy(); resolve({ stdout, stderr, exitCode }); },
       messages: [
         { encoding: buffer },
         { encoding: buffer, onmessage(buf) { stdout += buf.toString(); } },
         { encoding: buffer, onmessage(buf) { stderr += buf.toString(); } },
-        { encoding: uint, onmessage() {} },
+        { encoding: uint, onmessage(c) { exitCode = c; } },
         { encoding: resize },
       ]
     });
@@ -240,6 +241,7 @@ async function main() {
     const result = await rpc("run", { key: keyString, cmd });
     if (result.stdout) process.stdout.write(result.stdout);
     if (result.stderr) process.stderr.write(result.stderr);
+    if (typeof result.exitCode === "number") process.exitCode = result.exitCode;
     return;
   }
 
