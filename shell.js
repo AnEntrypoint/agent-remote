@@ -80,8 +80,10 @@ async function runCommand(keyString, cmd) {
     socket.once("error", reject);
   });
   socket.setKeepAlive(5000);
-  const command = Array.isArray(cmd) ? cmd[0] : SHELL.bin;
-  const args = Array.isArray(cmd) ? cmd.slice(1) : [SHELL.flag, cmd];
+  const cmdString = Array.isArray(cmd) ? cmd.join(" ") : cmd;
+  const tag = Math.random().toString(36).slice(2);
+  const START = "__AGENT_SHELL_BEGIN_" + tag + "__";
+  const END = "__AGENT_SHELL_END_" + tag + "__";
   return new Promise((resolve, reject) => {
     let stdout = "";
     let stderr = "";
@@ -91,8 +93,26 @@ async function runCommand(keyString, cmd) {
       protocol: "hypershell",
       id: null,
       handshake: handshakeSpawn,
-      onopen() {},
-      onclose() { socket.destroy(); node.destroy(); resolve({ stdout, stderr, exitCode }); },
+      onopen() {
+        const script = `${cmdString}\r\necho ${START}$LASTEXITCODE${END}\r\nexit\r\n`;
+        channel.messages[0].send(Buffer.from(script));
+      },
+      onclose() {
+        const stripAnsi = s => s
+          .replace(/\x1b\][^\x07]*(?:\x07|\x1b\\)/g, "")
+          .replace(/\x1b\[[\d;?]*[a-zA-Z]/g, "")
+          .replace(/\x1b[=>()][^\s]?/g, "");
+        const clean = stripAnsi(stdout).replace(/\r/g, "");
+        const re = new RegExp(START + "(\\d*)" + END);
+        const m = clean.match(re);
+        let body = clean;
+        if (m) {
+          if (m[1] !== "") exitCode = parseInt(m[1], 10);
+          body = clean.slice(0, m.index);
+        }
+        socket.destroy(); node.destroy();
+        resolve({ stdout: body, stderr, exitCode });
+      },
       messages: [
         { encoding: buffer },
         { encoding: buffer, onmessage(buf) { stdout += buf.toString(); } },
@@ -106,7 +126,7 @@ async function runCommand(keyString, cmd) {
       node.destroy();
       return reject(new Error("Could not open shell channel"));
     }
-    channel.open({ command, args, width: 80, height: 24 });
+    channel.open({ width: 200, height: 50 });
   });
 }
 
