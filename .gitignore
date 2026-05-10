@@ -1,6 +1,12 @@
 node_modules/
 *.exe
 *.tmp
+.codeinsight
+package-lock.json
+.server.log
+.server.err
+.daemon.log
+.daemon.err
 
 .code-search/
 # >>> gm managed (do not edit between markers)
