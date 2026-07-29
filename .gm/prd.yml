@@ -1,0 +1,156 @@
+- title: Install dependencies and verify resolution
+  detail: 'node_modules is missing; run bun install and confirm hyperdht, protomux, hypershell, hypercore-id-encoding, compact-encoding all resolve. Witness: import of shell.js succeeds with no missing-module error.'
+  tags:
+  - setup
+  - blocking
+  id: install-dependencies-and-verify-resolution
+  status: pending
+- title: Verify SDK exports
+  detail: 'Import shell.js and assert exports: deriveKeyPair, runServer, runCommand, startDaemon, rpc, connectTo as documented in README SDK section. Witness via exec_js dynamic import.'
+  tags:
+  - sdk
+  id: verify-sdk-exports
+  status: pending
+- title: Verify deriveKeyPair determinism and hyperdht v6 API
+  detail: deriveKeyPair(seed) must use sha256(seed)->DHT.keyPair and be deterministic across calls and platforms. Confirm DHT.keyPair(seed) returns {publicKey,secretKey} on installed hyperdht version. Witness via exec_js twice with same seed.
+  tags:
+  - sdk
+  - crypto
+  id: verify-derivekeypair-determinism-and-hyperdht-v6-api
+  status: pending
+- title: Verify --pubkey CLI offline
+  detail: '`node shell.js --pubkey --key X` prints the deterministic public key with no network. Witness.'
+  tags:
+  - cli
+  id: verify-pubkey-cli-offline
+  status: pending
+- title: Verify bare invocation usage output
+  detail: '`node shell.js` with no args prints usage and exits 0. Witness.'
+  tags:
+  - cli
+  id: verify-bare-invocation-usage-output
+  status: pending
+- title: Verify daemon lifecycle (start/health/shutdown)
+  detail: startDaemon writes port file, /health returns ok, shutdown RPC clears port file. Witness via exec_js orchestrating startDaemon + http health + rpc shutdown.
+  tags:
+  - daemon
+  id: verify-daemon-lifecycle-start-health-shutdown
+  status: pending
+- title: Verify RPC method coverage and error codes
+  detail: handleRPC must handle run/connect/disconnect/connections/shutdown; unknown method returns -32601; missing params throw. Witness by calling handleRPC directly in exec_js.
+  tags:
+  - rpc
+  id: verify-rpc-method-coverage-and-error-codes
+  status: pending
+- title: Integration test runServer + runCommand over private HyperDHT
+  detail: Spin up a private local HyperDHT bootstrap (custom bootstrap host/port), run server and client in-process with that bootstrap, execute a real command, assert stdout captured and channel opens. This is the core correctness gate. Witness via exec_js.
+  tags:
+  - integration
+  - core
+  id: integration-test-runserver-runcommand-over-private-hyperdht
+  status: pending
+- title: Verify exit code propagation
+  detail: 'Integration test: a command that exits 0 returns exitCode 0; a command that exits non-zero returns the correct code. Both platforms. Witness.'
+  tags:
+  - integration
+  - core
+  id: verify-exit-code-propagation
+  status: pending
+- title: 'BUG: cross-platform exit-code capture in runCommand'
+  detail: 'runCommand sends script hardcoding Windows `$LASTEXITCODE`. On Unix (/bin/sh) that var is empty so exitCode is never captured. Make the spawn script platform-aware: use `$?` for sh, `$LASTEXITCODE` for cmd.exe. Witness via integration test on the host platform and reason about the other.'
+  tags:
+  - bug
+  - core
+  id: bug-cross-platform-exit-code-capture-in-runcommand
+  status: pending
+- title: Unit-test ANSI strip and sentinel parsing
+  detail: 'Extract the stdout cleanup logic and test: colored ANSI output stripped, sentinel __AGENT_REMOTE_BEGIN/END extracted, exit code parsed, and command output containing sentinel-like text does not corrupt parsing. Witness via exec_js.'
+  tags:
+  - parsing
+  id: unit-test-ansi-strip-and-sentinel-parsing
+  status: pending
+- title: Verify --run argument parsing
+  detail: 'Parse cases: `--run --key X cmd`, multi-word command with spaces, command containing its own flags, `--run --key X -- echo hi`. Ensure --key is stripped from the command string correctly. Witness via exec_js reusing main() arg logic.'
+  tags:
+  - cli
+  - bug
+  id: verify-run-argument-parsing
+  status: pending
+- title: Verify --install-skill target handling
+  detail: --install-skill writes SKILL.md to <dir>/.claude/skills/agent-remote/; with no arg defaults to cwd. Verify file created with correct content and frontmatter. Witness via exec_js calling installSkill path.
+  tags:
+  - cli
+  id: verify-install-skill-target-handling
+  status: pending
+- title: Verify runCommand rejects when peer unreachable
+  detail: Connecting to a bogus/non-listening seed must reject with a clear error rather than hang indefinitely. Witness via exec_js with a random seed and short failure expectation.
+  tags:
+  - robustness
+  id: verify-runcommand-rejects-when-peer-unreachable
+  status: pending
+- title: Add overall timeout to runCommand
+  detail: A peer that connects but never sends output (or a half-open channel) currently relies on socket close to resolve, which can hang. Add an overall timeout that rejects clearly. Witness via test with a non-responding peer.
+  tags:
+  - robustness
+  - core
+  id: add-overall-timeout-to-runcommand
+  status: pending
+- title: Resolve daemon connect/run wiring inconsistency
+  detail: 'connectTo/connect/disconnect/connections RPC exist and maintain _connections, but `run` always opens a fresh one-shot runCommand, so connect/connections are dead. Decide: wire `run` to reuse a connection id, or simplify/remove the unused connect surface so behavior is consistent and documented. Witness via exec_js.'
+  tags:
+  - design
+  - rpc
+  id: resolve-daemon-connect-run-wiring-inconsistency
+  status: pending
+- title: Review server connection robustness
+  detail: In runServer, review per-connection socket error/keepalive/end handling and ShellServer open lifecycle for leaks or crashes on malformed peers. Witness via code review + integration test under repeated connections.
+  tags:
+  - robustness
+  - server
+  id: review-server-connection-robustness
+  status: pending
+- title: Ensure DHT node/socket cleanup
+  detail: Verify runCommand destroys its node+socket after each call; verify daemon _dht singleton does not leak across many connectTo calls. Witness via repeated-call test.
+  tags:
+  - robustness
+  - leak
+  id: ensure-dht-node-socket-cleanup
+  status: pending
+- title: Remove stale compiled artifact
+  detail: agent-remote-test.exe (115MB, dated 3/24, gitignored by *.exe) is a stale bun-compiled binary predating current shell.js. Remove it from the working tree and confirm gitignore covers it. Witness removal.
+  tags:
+  - cleanup
+  id: remove-stale-compiled-artifact
+  status: pending
+- title: Rename master branch to main
+  detail: 'Repo policy (CLAUDE.md) wants default branch main, not master. Plan: create main from master, update CI refs (publish.yml ref: master, auto-declaudeify), set GitHub default, delete master. Risky cross-repo action — verify approach and GitHub default-branch capability before executing; if blockedBy external (no GH token/permissions), keep as pending with blockedBy external. Witness.'
+  tags:
+  - repo
+  - policy
+  id: rename-master-branch-to-main
+  status: pending
+- title: Review publish.yml CI correctness
+  detail: 'publish.yml bumps npm patch version and publishes on every push, builds binaries via bun compile. Confirm node_modules install works on CI (bun install), `ref: master` consistent with branch, and binary outfile names match release expectations. Witness review.'
+  tags:
+  - ci
+  id: review-publish-yml-ci-correctness
+  status: pending
+- title: Verify docs/index.html accuracy
+  detail: Read docs/index.html and confirm it matches the current CLI surface, SDK exports, and seed model. Update any stale references (e.g., removed features, changed args). Witness.
+  tags:
+  - docs
+  id: verify-docs-index-html-accuracy
+  status: pending
+- title: Confirm README matches implementation
+  detail: Light check that README CLI reference and SDK examples match the actual shell.js exports and behavior (incl. platform shell table). Witness.
+  tags:
+  - docs
+  id: confirm-readme-matches-implementation
+  status: pending
+- title: Document seed safety in usage
+  detail: Seed is effectively a password but server logs print it and it may land in shell history / process list. Add a concise safety note to console output or docs where appropriate. Witness.
+  tags:
+  - security
+  - docs
+  id: document-seed-safety-in-usage
+  status: pending

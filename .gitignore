@@ -30,3 +30,4 @@ package-lock.json
 .plugkit-browser-profile-*/
 .plugkit-agent-worktree/
 *.stackdump
+.gm/pw-sock-*/

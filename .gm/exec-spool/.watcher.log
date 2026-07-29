@@ -1,0 +1,567 @@
+
+--- supervisor spawn 2026-07-10T10:02:24.028Z parent=5804 ---
+
+--- watcher spawn 2026-07-10T10:02:24.386Z supervisor=8624 reason=initial ---
+(node:24616) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[plugkit-wasm] plugkit v0.1.843 (wasm)
+[plugkit-wasm] watching C:\dev\agent-remote\.gm\exec-spool\in
+[dispatch] -> verb=3 task=3 body=200b
+[dispatch] <- verb=3 task=3 ms=16 out=81b
+[dispatch] -> verb=301 task=301 body=67b
+[dispatch] <- verb=301 task=301 ms=6 out=83b
+[dispatch] -> verb=bash task=1 body=139b
+[dispatch] <- verb=bash task=1 ms=6 out=150b
+[dispatch] -> verb=bash task=100 body=302b
+[dispatch] <- verb=bash task=100 ms=7 out=150b
+[dispatch] -> verb=bash task=install-test body=302b
+[dispatch] <- verb=bash task=install-test ms=5 out=150b
+[dispatch] -> verb=nodejs task=101 body=309b
+[dispatch] <- verb=nodejs task=101 ms=5 out=153b
+[dispatch] -> verb=nodejs task=2 body=421b
+[dispatch] <- verb=nodejs task=2 ms=5 out=153b
+[dispatch] -> verb=nodejs task=200 body=639b
+[dispatch] <- verb=nodejs task=200 ms=5 out=153b
+[dispatch] -> verb=nodejs task=300 body=44b
+[dispatch] <- verb=nodejs task=300 ms=4 out=153b
+[plugkit-wasm] spool watcher running
+(node:24616) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+[plugkit-wasm] evt: {"event":"codeinsight_rebuild","reason":"digest-absent","stored_then_current":"v2:d140172b1c7a374b:files=6","ts":1783677750264}
+[plugkit-wasm:warn] code_index: indexing root=. files=14 libsql_ok=true manifests=0
+[plugkit-wasm] evt: {"event":"embed.wasm-loading","reason":"host_vec_embed probe failed; loading wasm-side bert model","ts":1783677750481}
+[plugkit-wasm] evt: {"embed_dim":384,"event":"embed.model-loaded","model":"BAAI/bge-small-en-v1.5","num_hidden_layers":12,"safetensors_bytes":133466304,"tokenizer_bytes":711396,"ts":1783677750997}
+[plugkit-wasm:warn] embed::init_ctx OK (host_delegated=false)
+[plugkit-wasm] evt: {"event":"embed_init_ok","host_delegated":false,"safetensors_bytes":133466304,"tokenizer_bytes":711396,"ts":1783677750999}
+[plugkit-wasm:warn] code_index: done files_indexed=6 chunks=18 embedded=18 reused=0 reused_files=0 removed_files=0 skipped_no_embed=0 digest=v2:d140172b1c7a374b:files=6
+[plugkit-wasm] evt: {"deferred_count":0,"event":"rssearch_vectors_migrated","migrated_count":18,"namespace":"codeinsight","skipped_count":0,"ts":1783677768854}
+[plugkit-wasm] evt: {"deferred":22,"embedded":1,"event":"git_commit_vectors_synced","skipped":0,"ts":1783677775375,"window":23}
+[plugkit-wasm] evt: {"event":"embed.query_cache_hit","query_len":12,"ts":1783677775377}
+[dispatch] -> verb=instruction task=1 body=80b
+[plugkit-wasm] evt: {"event":"memory_md_exported","exported":0,"namespace":"default","skipped":0,"total":0,"ts":1783677896142}
+[plugkit-wasm] evt: {"event":"recall","hit":false,"mode":"auto_recall","n_hits":0,"namespace":"default","query":"make sure working practically seamlessly possible","sub":"memory","ts":1783677896293}
+[plugkit-wasm] evt: {"event":"recall","hit":false,"mode":"auto_recall","n_hits":0,"namespace":"default","query":"possible practically seamlessly","sub":"memory","ts":1783677896573}
+[plugkit-wasm:warn] instruction::handle start body_len=80
+turn-state.json parse failed (missing field `phase` at line 1 column 102): backed up to C:/dev/agent-remote/.gm/turn-state.json.corrupted-1783677896851
+[plugkit-wasm] evt: {"backupPath":"C:/dev/agent-remote/.gm/turn-state.json.corrupted-1783677896851","error":"missing field `phase` at line 1 column 102","event":"turn-state-corrupted","ts":1783677896853}
+[plugkit-wasm:warn] instruction::handle pre-recall query_len=67 prd_pending=0
+[plugkit-wasm:warn] recall::recall_hits start query_len=49 embed_len=67 limit=5
+[plugkit-wasm] evt: {"event":"embed.query_cache_hit","query_len":67,"ts":1783677896862}
+[plugkit-wasm:warn] recall::recall_hits embed_done embedded=true
+[plugkit-wasm:warn] recall::recall_hits vec_search returned
+[plugkit-wasm:warn] recall::recall_hits kv_query returned
+[plugkit-wasm] evt: {"event":"recall","hit":false,"mode":"kv_query","n_hits":0,"namespace":"default","query":"make sure working practically seamlessly possible","sub":"memory","ts":1783677897010}
+[plugkit-wasm:warn] instruction::handle post-recall
+turn-state.json parse failed (missing field `phase` at line 1 column 102): backed up to C:/dev/agent-remote/.gm/turn-state.json.corrupted-1783677897017
+[plugkit-wasm] evt: {"backupPath":"C:/dev/agent-remote/.gm/turn-state.json.corrupted-1783677897017","error":"missing field `phase` at line 1 column 102","event":"turn-state-corrupted","ts":1783677897018}
+[plugkit-wasm:warn] instruction::handle done out_len=7500
+[dispatch] <- verb=instruction task=1 ms=1126 out=7806b
+[dispatch] -> verb=recall task=1 body=65b
+[dispatch] <- verb=recall task=1 ms=167 out=215b
+[dispatch] -> verb=codesearch task=1 body=85b
+[plugkit-wasm] evt: {"deferred":21,"embedded":1,"event":"git_commit_vectors_synced","skipped":0,"ts":1783677940268,"window":23}
+[plugkit-wasm] evt: {"event":"embed.query_cache_hit","query_len":73,"ts":1783677940269}
+[dispatch] <- verb=codesearch task=1 ms=5649 out=67995b
+[dispatch] -> verb=transition task=1 body=13b
+turn-state.json parse failed (missing field `phase` at line 1 column 102): backed up to C:/dev/agent-remote/.gm/turn-state.json.corrupted-1783678062372
+[plugkit-wasm] evt: {"backupPath":"C:/dev/agent-remote/.gm/turn-state.json.corrupted-1783678062372","error":"missing field `phase` at line 1 column 102","event":"turn-state-corrupted","ts":1783678062374}
+[plugkit-wasm:warn] recall::recall_hits start query_len=4 embed_len=4 limit=3
+[plugkit-wasm:warn] recall::recall_hits embed_done embedded=true
+[plugkit-wasm:warn] recall::recall_hits vec_search returned
+[plugkit-wasm:warn] recall::recall_hits kv_query returned
+[plugkit-wasm] evt: {"event":"recall","hit":false,"mode":"kv_query","n_hits":0,"namespace":"default","query":"PLAN","sub":"memory","ts":1783678062643}
+[dispatch] <- verb=transition task=1 ms=282 out=132b
+[dispatch] -> verb=prd-add task=1 body=298b
+[dispatch] <- verb=prd-add task=1 ms=31 out=125b
+[dispatch] -> verb=prd-add task=2 body=231b
+[dispatch] <- verb=prd-add task=2 ms=10 out=101b
+[dispatch] -> verb=prd-add task=3 body=332b
+[dispatch] <- verb=prd-add task=3 ms=9 out=135b
+[dispatch] -> verb=prd-add task=4 body=160b
+[dispatch] <- verb=prd-add task=4 ms=11 out=108b
+[dispatch] -> verb=prd-add task=5 body=137b
+[dispatch] <- verb=prd-add task=5 ms=8 out=118b
+[dispatch] -> verb=prd-add task=6 body=245b
+[dispatch] <- verb=prd-add task=6 ms=9 out=128b
+[dispatch] -> verb=prd-add task=7 body=250b
+[dispatch] <- verb=prd-add task=7 ms=7 out=125b
+[dispatch] -> verb=prd-add task=8 body=363b
+[dispatch] <- verb=prd-add task=8 ms=10 out=142b
+[dispatch] -> verb=prd-add task=9 body=223b
+[dispatch] <- verb=prd-add task=9 ms=8 out=111b
+[dispatch] -> verb=prd-add task=10 body=385b
+[dispatch] <- verb=prd-add task=10 ms=8 out=133b
+[dispatch] -> verb=prd-add task=11 body=315b
+[dispatch] <- verb=prd-add task=11 ms=9 out=124b
+[dispatch] -> verb=prd-add task=12 body=307b
+[dispatch] <- verb=prd-add task=12 ms=9 out=110b
+[dispatch] -> verb=prd-add task=13 body=281b
+[dispatch] <- verb=prd-add task=13 ms=9 out=119b
+[dispatch] -> verb=prd-add task=14 body=265b
+[dispatch] <- verb=prd-add task=14 ms=10 out=130b
+[dispatch] -> verb=prd-add task=15 body=305b
+[dispatch] <- verb=prd-add task=15 ms=9 out=116b
+[dispatch] -> verb=prd-add task=16 body=411b
+[dispatch] <- verb=prd-add task=16 ms=9 out=130b
+[dispatch] -> verb=prd-add task=17 body=304b
+[dispatch] <- verb=prd-add task=17 ms=7 out=118b
+[dispatch] -> verb=prd-add task=18 body=246b
+[dispatch] <- verb=prd-add task=18 ms=7 out=113b
+[dispatch] -> verb=prd-add task=19 body=276b
+[dispatch] <- verb=prd-add task=19 ms=7 out=113b
+[dispatch] -> verb=prd-add task=20 body=463b
+[dispatch] <- verb=prd-add task=20 ms=9 out=111b
+[dispatch] -> verb=prd-add task=21 body=331b
+[dispatch] <- verb=prd-add task=21 ms=16 out=116b
+[dispatch] -> verb=prd-add task=22 body=245b
+[dispatch] <- verb=prd-add task=22 ms=8 out=114b
+[dispatch] -> verb=prd-add task=23 body=217b
+[dispatch] <- verb=prd-add task=23 ms=9 out=120b
+[dispatch] -> verb=prd-add task=24 body=264b
+[dispatch] <- verb=prd-add task=24 ms=8 out=112b
+[dispatch] -> verb=transition task=2 body=16b
+[plugkit-wasm:warn] recall::recall_hits start query_len=7 embed_len=7 limit=3
+[plugkit-wasm:warn] recall::recall_hits embed_done embedded=true
+[plugkit-wasm:warn] recall::recall_hits vec_search returned
+[plugkit-wasm:warn] recall::recall_hits kv_query returned
+[plugkit-wasm] evt: {"event":"recall","hit":false,"mode":"kv_query","n_hits":0,"namespace":"default","query":"EXECUTE","sub":"memory","ts":1783678120792}
+[dispatch] <- verb=transition task=2 ms=199 out=132b
+[dispatch] -> verb=exec_js task=1 body=55b
+[dispatch] <- verb=exec_js task=1 ms=6 out=153b
+[dispatch] -> verb=exec_js task=2 body=818b
+[dispatch] <- verb=exec_js task=2 ms=252 out=349b
+[dispatch] -> verb=exec_js task=3 body=1419b
+[dispatch] <- verb=exec_js task=3 ms=6 out=153b
+[dispatch] -> verb=exec_js task=4 body=93b
+[dispatch] <- verb=exec_js task=4 ms=118 out=1351b
+[dispatch] -> verb=exec_js task=5 body=70b
+
+--- watcher spawn 2026-07-10T10:16:27.280Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:17440) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[plugkit-wasm] stale lock (holder pid=24616 dead, age=35807ms); taking over
+[plugkit-wasm] VERB ABORT detected: prior watcher pid=24616 died inside verb=exec_js task=5
+[plugkit-wasm] SILENT ABORT detected: prior watcher pid=24616 sha=f49aaa4b555d died without writing .shutdown-reason.json (age=844950ms, prior_pid_alive=false)
+[plugkit-wasm] plugkit v0.1.843 (wasm)
+[plugkit-wasm] watching C:\dev\agent-remote\.gm\exec-spool\in
+[plugkit-wasm] UNPLANNED RESTART detected -- prior watcher died without writing .shutdown-reason.json. prior_status_age_ms=40761 boot_reason=unplanned-restart-after-exit
+[dispatch] -> verb=exec_js task=5 body=70b
+
+--- watcher spawn 2026-07-10T10:17:07.231Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:22372) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[plugkit-wasm] stale lock (holder pid=17440 dead, age=37556ms); taking over
+[plugkit-wasm] VERB ABORT detected: prior watcher pid=17440 died inside verb=exec_js task=5
+[plugkit-wasm] SILENT ABORT detected: prior watcher pid=17440 sha=f49aaa4b555d died without writing .shutdown-reason.json (age=37556ms, prior_pid_alive=false)
+[plugkit-wasm] plugkit v0.1.843 (wasm)
+[plugkit-wasm] watching C:\dev\agent-remote\.gm\exec-spool\in
+[plugkit-wasm] UNPLANNED RESTART detected -- prior watcher died without writing .shutdown-reason.json. prior_status_age_ms=37552 boot_reason=unplanned-restart-after-exit
+[dispatch] -> verb=exec_js task=5 body=70b
+[dispatch] <- verb=exec_js task=5 ms=27026 out=695b
+[plugkit-wasm] spool watcher running
+(node:22372) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+[plugkit-wasm] evt: {"event":"codeinsight_rebuild","reason":"digest-mismatch","stored_then_current":"v2:6a63f84e83011beb:files=7","ts":1783678656829}
+[plugkit-wasm:warn] code_index: indexing root=. files=15 libsql_ok=true manifests=6
+[plugkit-wasm] evt: {"event":"embed.wasm-loading","reason":"host_vec_embed probe failed; loading wasm-side bert model","ts":1783678657001}
+[plugkit-wasm] evt: {"embed_dim":384,"event":"embed.model-loaded","model":"BAAI/bge-small-en-v1.5","num_hidden_layers":12,"safetensors_bytes":133466304,"tokenizer_bytes":711396,"ts":1783678657568}
+[plugkit-wasm:warn] embed::init_ctx OK (host_delegated=false)
+[plugkit-wasm] evt: {"event":"embed_init_ok","host_delegated":false,"safetensors_bytes":133466304,"tokenizer_bytes":711396,"ts":1783678657571}
+
+--- watcher spawn 2026-07-10T10:17:53.289Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:7292) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[plugkit-wasm] stale lock (holder pid=22372 dead, age=45843ms); taking over
+[plugkit-wasm] SILENT ABORT detected: prior watcher pid=22372 sha=f49aaa4b555d died without writing .shutdown-reason.json (age=45843ms, prior_pid_alive=false)
+[plugkit-wasm] plugkit v0.1.843 (wasm)
+[plugkit-wasm] watching C:\dev\agent-remote\.gm\exec-spool\in
+[plugkit-wasm] UNPLANNED RESTART detected -- prior watcher died without writing .shutdown-reason.json. prior_status_age_ms=18790 boot_reason=unplanned-restart-after-exit
+[plugkit-wasm] spool watcher running
+(node:7292) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+[plugkit-wasm] evt: {"event":"codeinsight_rebuild","reason":"digest-mismatch","stored_then_current":"v2:6a63f84e83011beb:files=7","ts":1783678678609}
+[plugkit-wasm:warn] code_index: indexing root=. files=15 libsql_ok=true manifests=7
+[plugkit-wasm] evt: {"event":"embed.wasm-loading","reason":"host_vec_embed probe failed; loading wasm-side bert model","ts":1783678678892}
+[plugkit-wasm] evt: {"embed_dim":384,"event":"embed.model-loaded","model":"BAAI/bge-small-en-v1.5","num_hidden_layers":12,"safetensors_bytes":133466304,"tokenizer_bytes":711396,"ts":1783678679327}
+[plugkit-wasm:warn] embed::init_ctx OK (host_delegated=false)
+[plugkit-wasm] evt: {"event":"embed_init_ok","host_delegated":false,"safetensors_bytes":133466304,"tokenizer_bytes":711396,"ts":1783678679330}
+[plugkit-wasm:warn] code_index: done files_indexed=7 chunks=22 embedded=15 reused=7 reused_files=6 removed_files=0 skipped_no_embed=0 digest=v2:6a63f84e83011beb:files=7
+[plugkit-wasm] evt: {"deferred_count":0,"event":"rssearch_vectors_migrated","migrated_count":20,"namespace":"codeinsight","skipped_count":0,"ts":1783678696393}
+[plugkit-wasm] evt: {"deferred":20,"embedded":1,"event":"git_commit_vectors_synced","skipped":0,"ts":1783678704082,"window":23}
+[plugkit-wasm] evt: {"event":"embed.query_cache_hit","query_len":12,"ts":1783678704084}
+
+--- watcher spawn 2026-07-10T10:52:47.844Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:476) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T10:52:51.647Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:15712) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T10:53:50.659Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:22776) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T10:54:00.935Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:14812) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T10:54:10.726Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:26704) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[plugkit-wasm] stale lock (holder pid=7292 dead, age=135996ms); taking over
+[plugkit-wasm] SILENT ABORT detected: prior watcher pid=7292 sha=f49aaa4b555d died without writing .shutdown-reason.json (age=2182394ms, prior_pid_alive=false)
+[plugkit-wasm] plugkit v0.1.843 (wasm)
+[plugkit-wasm] watching C:\dev\agent-remote\.gm\exec-spool\in
+[plugkit-wasm] UNPLANNED RESTART detected -- prior watcher died without writing .shutdown-reason.json. prior_status_age_ms=135826 boot_reason=unplanned-restart-after-exit
+[plugkit-wasm] spool watcher running
+(node:26704) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+[plugkit-wasm] evt: {"event":"codeinsight_rebuild","reason":"digest-mismatch","stored_then_current":"v2:f385417b4d4f2206:files=9","ts":1783680861277}
+[plugkit-wasm:warn] code_index: indexing root=. files=20 libsql_ok=true manifests=7
+[plugkit-wasm] evt: {"event":"embed.wasm-loading","reason":"host_vec_embed probe failed; loading wasm-side bert model","ts":1783680874343}
+[plugkit-wasm] evt: {"embed_dim":384,"event":"embed.model-loaded","model":"BAAI/bge-small-en-v1.5","num_hidden_layers":12,"safetensors_bytes":133466304,"tokenizer_bytes":711396,"ts":1783680875373}
+[plugkit-wasm:warn] embed::init_ctx OK (host_delegated=false)
+[plugkit-wasm] evt: {"event":"embed_init_ok","host_delegated":false,"safetensors_bytes":133466304,"tokenizer_bytes":711396,"ts":1783680875376}
+[plugkit-wasm:warn] code_index: partial pass (wall budget) files_indexed=9 deferred_files=1 embedded=38 reused=2 -- digest withheld, next call resumes
+[plugkit-wasm] evt: {"deferred_files":1,"embedded":38,"event":"codeinsight_index_partial","files_indexed":9,"ts":1783680906387}
+[plugkit-wasm] evt: {"deferred_count":20,"event":"rssearch_vectors_migrated","migrated_count":18,"namespace":"codeinsight","skipped_count":0,"ts":1783680909802}
+[plugkit-wasm] evt: {"deferred":19,"embedded":1,"event":"git_commit_vectors_synced","skipped":0,"ts":1783680916464,"window":23}
+[plugkit-wasm] evt: {"event":"embed.query_cache_hit","query_len":12,"ts":1783680916478}
+
+--- watcher spawn 2026-07-10T11:01:45.694Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:26900) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:02:00.926Z supervisor=8624 reason=unplanned-restart-after-exit ---
+
+--- watcher spawn 2026-07-10T11:02:05.257Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:11760) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:02:15.488Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:10248) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:02:25.601Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:21560) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:04:17.731Z supervisor=8624 reason=post-burst-backoff ---
+(node:18532) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:04:30.796Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:13544) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:04:41.123Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:22916) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:04:51.019Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:27212) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:05:01.315Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:7584) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:06:11.202Z supervisor=8624 reason=post-burst-backoff ---
+(node:27012) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:08:11.725Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:12292) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:08:21.107Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:24628) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:08:30.925Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:5408) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:08:41.054Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:18200) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:09:37.763Z supervisor=8624 reason=unplanned-restart-after-exit ---
+
+--- watcher spawn 2026-07-10T11:09:41.567Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:19244) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:09:52.387Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:5476) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:10:01.318Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:16604) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:10:11.682Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:18936) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:10:23.022Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:1800) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:11:31.866Z supervisor=8624 reason=post-burst-backoff ---
+(node:24232) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:11:41.698Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:27552) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:11:56.428Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:22636) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:12:02.037Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:17744) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:13:56.105Z supervisor=8624 reason=unplanned-restart-after-exit ---
+
+--- watcher spawn 2026-07-10T11:14:00.331Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:21648) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:14:10.260Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:4280) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:14:56.480Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:21132) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:15:06.381Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:27484) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:15:16.389Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:23516) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:15:26.310Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:11608) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:18:57.741Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:22376) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:19:50.407Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:18240) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:20:01.043Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:23580) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:21:10.412Z supervisor=8624 reason=unplanned-restart-after-exit ---
+
+--- watcher spawn 2026-07-10T11:21:14.308Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:20608) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:21:50.998Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:3064) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:22:01.262Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:15060) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:22:11.863Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:8740) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:22:21.420Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:3884) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:24:24.708Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:21660) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:24:33.872Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:14004) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:24:45.200Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:24256) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:25:34.503Z supervisor=8624 reason=unplanned-restart-after-exit ---
+
+--- watcher spawn 2026-07-10T11:25:38.758Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:24648) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:25:48.640Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:23248) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:28:00.541Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:2704) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:28:12.049Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:25588) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:28:38.152Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:24460) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:28:48.150Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:15380) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:28:58.074Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:3256) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:29:07.850Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:18920) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:29:18.397Z supervisor=8624 reason=unplanned-restart-after-exit ---
+(node:24524) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+--- watcher spawn 2026-07-10T11:31:35.342Z supervisor=8624 reason=post-burst-backoff ---
+(node:6700) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/user/.gm-tools/plugkit-wasm-wrapper.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to C:\Users\user\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[plugkit-wasm] stale lock (holder pid=26704 dead, age=1912771ms); taking over
+[plugkit-wasm] SILENT ABORT detected: prior watcher pid=26704 sha=f49aaa4b555d died without writing .shutdown-reason.json (age=2246327ms, prior_pid_alive=false)
+[plugkit-wasm] plugkit v0.1.843 (wasm)
+[plugkit-wasm] watching C:\dev\agent-remote\.gm\exec-spool\in
+[plugkit-wasm] UNPLANNED RESTART detected -- prior watcher died without writing .shutdown-reason.json. prior_status_age_ms=1930904 boot_reason=post-burst-backoff
+[plugkit-wasm] spool watcher running
+(node:6700) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+[plugkit-wasm] evt: {"event":"codeinsight_rebuild","reason":"digest-mismatch","stored_then_current":"v2:3590b03869e7a66e:files=9","ts":1783683107547}
+[plugkit-wasm:warn] code_index: indexing root=. files=20 libsql_ok=true manifests=9
+[plugkit-wasm] evt: {"event":"embed.wasm-loading","reason":"host_vec_embed probe failed; loading wasm-side bert model","ts":1783683109658}
+[plugkit-wasm] evt: {"embed_dim":384,"event":"embed.model-loaded","model":"BAAI/bge-small-en-v1.5","num_hidden_layers":12,"safetensors_bytes":133466304,"tokenizer_bytes":711396,"ts":1783683110706}
+[plugkit-wasm:warn] embed::init_ctx OK (host_delegated=false)
+[plugkit-wasm] evt: {"event":"embed_init_ok","host_delegated":false,"safetensors_bytes":133466304,"tokenizer_bytes":711396,"ts":1783683110722}

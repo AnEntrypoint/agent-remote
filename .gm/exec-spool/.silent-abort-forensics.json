@@ -1,0 +1,25 @@
+{
+  "prior_pid": 26704,
+  "prior_ts": 1783680857946,
+  "prior_sha": "f49aaa4b555d",
+  "prior_version": "0.1.843",
+  "detected_at": 1783683104274,
+  "age_ms": 2246327,
+  "shutdown_reason_present": false,
+  "shutdown_reason_ts": null,
+  "prior_verb_active": null,
+  "prior_status": {
+    "pid": 26704,
+    "ts": 1783681173376,
+    "version": "0.1.843",
+    "instance_version": "0.1.843",
+    "file_version": "0.1.843",
+    "version_drifted": false,
+    "boot_reason": "unplanned-restart-after-exit",
+    "supervisor_pid": 8624,
+    "wrapper_sha": "f49aaa4b555d",
+    "idle_limit_ms": 3600000,
+    "busy_until": 1783681193376
+  },
+  "prior_pid_alive": false
+}

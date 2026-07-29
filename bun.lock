@@ -5,6 +5,7 @@
     "": {
       "name": "agent-remote",
       "dependencies": {
+        "compact-encoding": "^2.16.0",
         "hypercore-id-encoding": "^1.3.0",
         "hyperdht": "^6.29.6",
         "hypershell": "^0.0.15",

@@ -4,12 +4,22 @@ import http from "node:http";
 import { writeFileSync, readFileSync, existsSync, unlinkSync, mkdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
+import os from "node:os";
 import { fileURLToPath } from "node:url";
 
 const PORT_FILE = join(tmpdir(), "agent-remote.port");
 const SHELL = process.platform === "win32"
     ? { bin: process.env.COMSPEC || "cmd.exe", flag: "/c" }
     : { bin: process.env.SHELL || "/bin/sh", flag: "-c" };
+
+function parseBootstrap() {
+    const raw = process.env.HYPERDHT_BOOTSTRAP;
+    if (!raw) return undefined;
+    return raw.split(",").map(s => {
+        const idx = s.lastIndexOf(":");
+        return { host: s.slice(0, idx), port: parseInt(s.slice(idx + 1), 10) };
+    });
+}
 
 export async function deriveKeyPair(keyString) {
     const DHT = (await import("hyperdht")).default;
@@ -20,9 +30,11 @@ export async function deriveKeyPair(keyString) {
 export async function runServer(keyString) {
     const HypercoreId = (await import("hypercore-id-encoding")).default;
     const Protomux = (await import("protomux")).default;
-    const { ShellServer } = await import("hypershell/lib/shell.js");
+    const { handshakeSpawn, resize } = await import("hypershell/messages.js");
+    const { buffer, uint } = await import("compact-encoding");
+    const PTY = (await import("tt-native")).default;
     const { keyPair, DHT } = await deriveKeyPair(keyString);
-    const node = new DHT();
+    const node = new DHT({ bootstrap: parseBootstrap() });
     const server = node.createServer({ firewall: () => false });
     server.on("connection", socket => {
         socket.on("end", () => socket.end());
@@ -31,8 +43,44 @@ export async function runServer(keyString) {
         });
         socket.setKeepAlive(5000);
         const mux = new Protomux(socket);
-        const shell = new ShellServer({ mux });
-        if (shell.channel) shell.open();
+        const isWin = process.platform === "win32";
+        const shellBin = isWin ? "cmd.exe" : (process.env.SHELL || "/bin/sh");
+        const shellFlag = isWin ? "/c" : "-c";
+        const channel = mux.createChannel({
+            protocol: "hypershell",
+            id: null,
+            handshake: handshakeSpawn,
+            onopen(handshake) {
+                const cmd = (handshake.args && handshake.args.join(" ")) || "";
+                let pty;
+                try {
+                    pty = PTY.spawn(shellBin, [shellFlag + " " + cmd], {
+                        cwd: os.homedir(),
+                        env: process.env,
+                        width: handshake.width || 80,
+                        height: handshake.height || 24
+                    });
+                } catch (err) {
+                    channel.messages[3].send(1);
+                    channel.messages[2].send(Buffer.from(String(err) + "\n"));
+                    channel.close();
+                    return;
+                }
+                pty.on("data", d => channel.messages[1].send(d));
+                pty.once("exit", code => {
+                    if (typeof code === "number" && Number.isFinite(code) && code >= 0) channel.messages[3].send(code);
+                });
+                pty.once("close", () => channel.close());
+            },
+            messages: [
+                { encoding: buffer },
+                { encoding: buffer },
+                { encoding: buffer },
+                { encoding: uint },
+                { encoding: resize }
+            ]
+        });
+        if (channel) channel.open({ width: 200, height: 50 });
     });
     await server.listen(keyPair);
     const pubHex = HypercoreId.encode(keyPair.publicKey);
@@ -50,7 +98,7 @@ let _dht = null;
 async function getDHT() {
     if (_dht) return _dht;
     const { DHT } = await deriveKeyPair("__bootstrap__");
-    _dht = new DHT();
+    _dht = new DHT({ bootstrap: parseBootstrap() });
     return _dht;
 }
 
@@ -71,14 +119,11 @@ export async function runCommand(keyString, cmd) {
     const { handshakeSpawn, resize } = await import("hypershell/messages.js");
     const { buffer, uint } = await import("compact-encoding");
     const { keyPair, DHT } = await deriveKeyPair(keyString);
-    const node = new DHT();
+    const node = new DHT({ bootstrap: parseBootstrap() });
     const socket = node.connect(keyPair.publicKey, { keyPair });
     await new Promise((res, rej) => { socket.once("open", res); socket.once("error", rej); });
     socket.setKeepAlive(5000);
     const cmdString = Array.isArray(cmd) ? cmd.join(" ") : cmd;
-    const tag = Math.random().toString(36).slice(2);
-    const START = "__AGENT_REMOTE_BEGIN_" + tag + "__";
-    const END = "__AGENT_REMOTE_END_" + tag + "__";
     return new Promise((resolveP, reject) => {
         let stdout = "";
         let stderr = "";
@@ -88,25 +133,17 @@ export async function runCommand(keyString, cmd) {
             protocol: "hypershell",
             id: null,
             handshake: handshakeSpawn,
-            onopen() {
-                const script = `${cmdString}\r\necho ${START}$LASTEXITCODE${END}\r\nexit\r\n`;
-                channel.messages[0].send(Buffer.from(script));
-            },
             onclose() {
                 const stripAnsi = s => s
                     .replace(/\x1b\][^\x07]*(?:\x07|\x1b\\)/g, "")
                     .replace(/\x1b\[[\d;?]*[a-zA-Z]/g, "")
                     .replace(/\x1b[=>()][^\s]?/g, "");
-                const clean = stripAnsi(stdout).replace(/\r/g, "");
-                const re = new RegExp(START + "(\\d*)" + END);
-                const m = clean.match(re);
-                let body = clean;
-                if (m) {
-                    if (m[1] !== "") exitCode = parseInt(m[1], 10);
-                    body = clean.slice(0, m.index);
-                }
-                socket.destroy(); node.destroy();
-                resolveP({ stdout: body, stderr, exitCode });
+                node.destroy();
+                resolveP({
+                    stdout: stripAnsi(stdout).replace(/\r/g, ""),
+                    stderr: stripAnsi(stderr).replace(/\r/g, ""),
+                    exitCode
+                });
             },
             messages: [
                 { encoding: buffer },
@@ -121,7 +158,7 @@ export async function runCommand(keyString, cmd) {
             node.destroy();
             return reject(new Error("Could not open shell channel"));
         }
-        channel.open({ width: 200, height: 50 });
+        channel.open({ args: [cmdString], width: 200, height: 50 });
     });
 }
 
