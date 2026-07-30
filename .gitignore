@@ -31,3 +31,4 @@ package-lock.json
 .plugkit-agent-worktree/
 *.stackdump
 .gm/pw-sock-*/
+config.bat
