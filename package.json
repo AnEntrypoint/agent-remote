@@ -1,6 +1,6 @@
 {
     "name": "agent-remote",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "Peer-to-peer remote shell over HyperDHT. No ports, no firewall, no servers. SDK and CLI — run via npx or bunx anywhere.",
     "type": "module",
     "main": "./shell.js",
